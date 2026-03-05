@@ -144,6 +144,20 @@
     .val-head { font-size: 20px !important; margin-bottom: 0 !important; padding-bottom: 14px; border-bottom: 1px solid rgba(0,0,0,.06); }
     .val-head-blue { color: var(--blue) !important; }
     .val-head-gold { color: var(--gold) !important; }
+    .val-row {
+      display: grid; grid-template-columns: 48px 1fr; gap: 14px;
+      align-items: start; padding: 14px 0;
+      border-bottom: 1px solid rgba(0,0,0,.04);
+    }
+    .val-row:last-child { border-bottom: none; }
+    .val-icon {
+      width: 42px; height: 42px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; flex-shrink: 0;
+    }
+    .val-icon.blue { background: var(--blue-light); }
+    .val-icon.gold { background: var(--gold-light); }
+    .val-row p { margin: 0; font-size: 14.5px; color: var(--muted); line-height: 1.55; padding-top: 8px; }
 
     /* ── Steps ────────────────────────────────── */
     .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 32px; margin-top: 48px; counter-reset: step; }
@@ -303,15 +317,15 @@
     <div class="cards cards-2 cards-aligned rows-3p" style="margin-top: 48px;">
       <div class="card">
         <h3 class="val-head val-head-blue" data-i18n="val_ops_h">For Mall Operators</h3>
-        <p data-i18n="val_ops_1">Incremental weekday spend from a workforce in market every single day.</p>
-        <p data-i18n="val_ops_2">Stronger tenant sales PSF in F&amp;B, coffee, convenience, and essentials.</p>
-        <p data-i18n="val_ops_3">Positive street impact — fewer idle vehicles parked outside your mall.</p>
+        <div class="val-row"><span class="val-icon blue">🛒</span><p data-i18n="val_ops_1">Incremental weekday spend from a workforce in market every single day.</p></div>
+        <div class="val-row"><span class="val-icon blue">📈</span><p data-i18n="val_ops_2">Stronger tenant sales PSF in F&amp;B, coffee, convenience, and essentials.</p></div>
+        <div class="val-row"><span class="val-icon blue">🏙️</span><p data-i18n="val_ops_3">Positive street impact — fewer idle vehicles parked outside your mall.</p></div>
       </div>
       <div class="card gold-accent">
         <h3 class="val-head val-head-gold" data-i18n="val_drv_h">For Professional Drivers</h3>
-        <p data-i18n="val_drv_1">Safe, predictable stops near food, coffee, restrooms, and shelter.</p>
-        <p data-i18n="val_drv_2">One membership that works across a citywide network of malls.</p>
-        <p data-i18n="val_drv_3">Dignity and proper rest during long shifts.</p>
+        <div class="val-row"><span class="val-icon gold">🅿️</span><p data-i18n="val_drv_1">Safe, predictable stops near food, coffee, restrooms, and shelter.</p></div>
+        <div class="val-row"><span class="val-icon gold">💳</span><p data-i18n="val_drv_2">One membership that works across a citywide network of malls.</p></div>
+        <div class="val-row"><span class="val-icon gold">☕</span><p data-i18n="val_drv_3">Dignity and proper rest during long shifts.</p></div>
       </div>
     </div>
   </div>
@@ -380,7 +394,7 @@
     <div class="roadmap-list">
       <div class="roadmap-item"><div class="roadmap-dot"></div><span data-i18n="r1">Deeper in-app merchant promos and meal bundles.</span></div>
       <div class="roadmap-item"><div class="roadmap-dot"></div><span data-i18n="r2">Expand membership to logistics and delivery drivers to widen the base.</span></div>
-      <div class="roadmap-item"><div class="roadmap-dot"></div><span data-i18n="r3">Optional light-touch POS or QR validation (not in MVP).</span></div>
+      <div class="roadmap-item"><div class="roadmap-dot"></div><span data-i18n="r3">Optional light-touch POS or QR validation.</span></div>
       <div class="roadmap-item"><div class="roadmap-dot"></div><span data-i18n="r4">Data insights: visit timing, repeat rates, merchant category interest.</span></div>
     </div>
   </div>
@@ -467,7 +481,7 @@ const i18n = {
     road_sub: "Once density is reached, the network unlocks much more.",
     r1: "Deeper in-app merchant promos and meal bundles.",
     r2: "Expand membership to logistics and delivery drivers to widen the base.",
-    r3: "Optional light-touch POS or QR validation (not in MVP).",
+    r3: "Optional light-touch POS or QR validation.",
     r4: "Data insights: visit timing, repeat rates, merchant category interest.",
     cta_label: "Get Started",
     cta_title: "Let\u2019s start the conversation.",
@@ -533,7 +547,7 @@ const i18n = {
     road_sub: "\u7576\u7db2\u7d61\u5bc6\u5ea6\u9054\u6a19\u5f8c\uff0c\u66f4\u591a\u53ef\u80fd\u6027\u5c07\u88ab\u89e3\u9396\u3002",
     r1: "\u66f4\u6df1\u5165\u7684\u61c9\u7528\u7a0b\u5f0f\u5167\u5546\u6236\u512a\u60e0\u53ca\u5957\u9910\u63a8\u5ee3\u3002",
     r2: "\u64f4\u5c55\u6703\u54e1\u81f3\u7269\u6d41\u53ca\u901e\u905e\u53f8\u6a5f\uff0c\u64f4\u5927\u6703\u54e1\u57fa\u790e\u3002",
-    r3: "\u65e5\u5f8c\u53ef\u9078\u8f15\u5ea6POS\u6216QR\u9a57\u8b49\uff08\u975eMVP\u968e\u6bb5\uff09\u3002",
+    r3: "\u65e5\u5f8c\u53ef\u9078\u8f15\u5ea6POS\u6216QR\u9a57\u8b49\u3002",
     r4: "\u6578\u64da\u6d1e\u5bdf\uff1a\u5230\u8a2a\u6642\u6bb5\u3001\u56de\u8a2a\u7387\u3001\u5546\u6236\u985e\u5225\u504f\u597d\u3002",
     cta_label: "\u958b\u59cb\u5408\u4f5c",
     cta_title: "\u8b93\u6211\u5011\u958b\u59cb\u5c0d\u8a71\u3002",
