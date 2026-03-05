@@ -21,7 +21,8 @@
       --radius: 16px;
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; overflow-x: hidden; }
+    body { overflow-x: hidden; }
     body {
       font-family: "Open Sans", "Noto Sans TC", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       color: var(--ink); background: var(--bg);
@@ -96,16 +97,16 @@
     /* ── TAM band ────────────────────────────── */
     .tam { background: var(--blue); color: #fff; padding: 72px 28px; }
     .tam-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 40px;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr)); gap: 40px;
     }
-    .tam-item .tam-value { font-size: 44px; font-weight: 800; color: var(--gold); letter-spacing: -.02em; }
+    .tam-item .tam-value { font-size: clamp(32px, 8vw, 44px); font-weight: 800; color: var(--gold); letter-spacing: -.02em; }
     .tam-item .tam-label { font-size: 15px; color: rgba(255,255,255,.8); margin-top: 6px; line-height: 1.5; }
     body.zh .tam-item .tam-value { font-size: 46px; }
 
     /* ── Cards ────────────────────────────────── */
     .cards { display: grid; gap: 24px; margin-top: 48px; }
-    .cards-3 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
-    .cards-2 { grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); }
+    .cards-3 { grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr)); }
+    .cards-2 { grid-template-columns: repeat(auto-fit, minmax(min(340px, 100%), 1fr)); }
     .card {
       background: var(--card); border-radius: var(--radius);
       padding: 36px 32px; border-left: 4px solid var(--blue);
@@ -160,7 +161,7 @@
     .val-row p { margin: 0; font-size: 14.5px; color: var(--muted); line-height: 1.55; padding-top: 8px; }
 
     /* ── Steps ────────────────────────────────── */
-    .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 32px; margin-top: 48px; counter-reset: step; }
+    .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap: 32px; margin-top: 48px; counter-reset: step; }
     .step { position: relative; padding-left: 0; }
     .step::before {
       content: counter(step); counter-increment: step;
@@ -173,7 +174,7 @@
     .step p { font-size: 14px; color: var(--muted); line-height: 1.55; }
 
     /* ── Pilot details ───────────────────────── */
-    .pilot-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; margin-top: 48px; }
+    .pilot-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr)); gap: 24px; margin-top: 48px; }
     .pilot-item { padding: 28px; background: var(--card); border-radius: var(--radius); box-shadow: 0 4px 20px rgba(2,6,23,.05); }
     .pilot-item .pilot-key { font-size: 13px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
     .pilot-item .pilot-val { font-size: 15px; color: var(--ink); line-height: 1.55; }
@@ -205,12 +206,25 @@
 
     /* ── Responsive ───────────────────────────── */
     @media (max-width: 640px) {
-      section { padding: 64px 20px; }
-      .hero { padding-top: 120px; }
-      .tam { padding: 48px 20px; }
+      section { padding: 64px 16px; }
+      .hero { padding-top: 110px; padding-bottom: 48px; }
+      .tam { padding: 48px 16px; }
+      .nav-inner { padding: 14px 16px; }
       .section-label { font-size: 14px; }
       body.zh .section-label { font-size: 13px; }
-      .tam-item .tam-value { font-size: 34px; }
+      .tam-item .tam-value { font-size: 32px; }
+      body.zh .tam-item .tam-value { font-size: 34px; }
+      .stat-item .stat-value { font-size: 32px; }
+      .impact-item .impact-value { font-size: 32px; }
+      body.zh .impact-item .impact-value { font-size: 34px; }
+      .cards-aligned.rows-icon { grid-template-rows: auto; }
+      .cards-aligned.rows-icon > .card { grid-row: auto; grid-template-rows: auto; }
+      .cards-aligned.rows-3p { grid-template-rows: auto; }
+      .cards-aligned.rows-3p > .card { grid-row: auto; grid-template-rows: auto; }
+      .val-row { grid-template-columns: 40px 1fr; gap: 10px; }
+      .val-icon { width: 36px; height: 36px; font-size: 17px; }
+      .btn { padding: 13px 24px; font-size: 14px; }
+      .cta-buttons { flex-direction: column; align-items: center; }
     }
   </style>
 </head>
