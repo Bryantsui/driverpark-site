@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DriverPark — Build Hong Kong's First Driver-Friendly Mall Network</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;800;900&family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --blue: #0d47a1;
+      --blue-light: #e8eaf6;
+      --gold: #f9a825;
+      --gold-light: #fff8e1;
+      --dark: #0b1220;
+      --ink: #2d2d2d;
+      --muted: #546e7a;
+      --bg: #f6f8fc;
+      --card: #ffffff;
+      --radius: 16px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: "Open Sans", "Noto Sans TC", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink); background: var(--bg);
+      -webkit-font-smoothing: antialiased; line-height: 1.6;
+    }
+    body.zh { font-family: "Noto Sans TC", "Open Sans", -apple-system, "PingFang HK", "Microsoft JhengHei", sans-serif; }
+
+    /* ── Nav ─────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(255,255,255,.92);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(0,0,0,.06);
+    }
+    .nav-inner {
+      max-width: 1100px; margin: 0 auto; padding: 16px 28px;
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    }
+    .logo { font-size: 20px; font-weight: 800; color: var(--blue); letter-spacing: -.02em; text-decoration: none; }
+    .logo span { color: var(--gold); }
+    .nav-right { display: flex; align-items: center; gap: 12px; }
+    .lang-toggle {
+      font-size: 13px; font-weight: 700; color: var(--muted);
+      background: var(--bg); border: 1.5px solid rgba(0,0,0,.1);
+      padding: 6px 14px; border-radius: 8px; cursor: pointer; transition: .2s; white-space: nowrap;
+    }
+    .lang-toggle:hover { border-color: var(--blue); color: var(--blue); }
+    nav a.cta-nav {
+      font-size: 14px; font-weight: 700; color: #fff; background: var(--blue);
+      text-decoration: none; padding: 9px 22px; border-radius: 8px; transition: .2s; white-space: nowrap;
+    }
+    nav a.cta-nav:hover { background: #0a3a87; }
+
+    /* ── Typography ──────────────────────────── */
+    section { padding: 100px 28px; }
+    .container { max-width: 1100px; margin: 0 auto; }
+    .section-label {
+      font-size: 17px; font-weight: 800; letter-spacing: .10em;
+      text-transform: uppercase; color: var(--gold); margin-bottom: 16px;
+    }
+    h1 { font-size: clamp(38px, 5.5vw, 58px); font-weight: 800; color: var(--blue); letter-spacing: -.02em; line-height: 1.1; }
+    h2 { font-size: clamp(32px, 4vw, 46px); font-weight: 800; color: var(--blue); letter-spacing: -.02em; line-height: 1.15; }
+    .subtitle { font-size: 18px; color: var(--muted); max-width: 640px; margin-top: 20px; line-height: 1.65; }
+    body.zh .section-label { font-size: 15px; letter-spacing: .06em; }
+    body.zh h1 { font-size: clamp(40px, 5.5vw, 60px); letter-spacing: -.01em; }
+    body.zh h2 { font-size: clamp(34px, 4.2vw, 48px); letter-spacing: -.01em; }
+    body.zh .subtitle { font-size: 17px; }
+
+    /* ── Hero ────────────────────────────────── */
+    .hero {
+      padding-top: 160px; padding-bottom: 80px;
+      background:
+        radial-gradient(900px 600px at 15% 30%, rgba(13,71,161,.08), transparent 60%),
+        radial-gradient(700px 500px at 80% 10%, rgba(249,168,37,.10), transparent 55%),
+        linear-gradient(180deg, #fff 0%, var(--bg) 100%);
+    }
+    .hero h1 { max-width: 760px; }
+    .hero .subtitle { max-width: 620px; }
+    .hero-cta { margin-top: 36px; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 15px 34px; border-radius: 10px; font-size: 16px; font-weight: 700;
+      text-decoration: none; transition: .2s; border: none; cursor: pointer;
+    }
+    .btn-primary { background: var(--blue); color: #fff; }
+    .btn-primary:hover { background: #0a3a87; }
+    .btn-outline { background: transparent; color: var(--blue); border: 2px solid var(--blue); padding: 13px 32px; }
+    .btn-outline:hover { background: var(--blue); color: #fff; }
+    .btn-gold { background: var(--gold); color: var(--dark); }
+    .btn-gold:hover { background: #e09800; }
+
+    /* ── TAM band ────────────────────────────── */
+    .tam { background: var(--blue); color: #fff; padding: 72px 28px; }
+    .tam-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 40px;
+    }
+    .tam-item .tam-value { font-size: 44px; font-weight: 800; color: var(--gold); letter-spacing: -.02em; }
+    .tam-item .tam-label { font-size: 15px; color: rgba(255,255,255,.8); margin-top: 6px; line-height: 1.5; }
+    body.zh .tam-item .tam-value { font-size: 46px; }
+
+    /* ── Cards ────────────────────────────────── */
+    .cards { display: grid; gap: 24px; margin-top: 48px; }
+    .cards-3 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+    .cards-2 { grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); }
+    .card {
+      background: var(--card); border-radius: var(--radius);
+      padding: 36px 32px; border-left: 4px solid var(--blue);
+      box-shadow: 0 4px 24px rgba(2,6,23,.06); transition: box-shadow .2s;
+    }
+    .card:hover { box-shadow: 0 8px 32px rgba(2,6,23,.10); }
+    .card.gold-accent { border-left-color: var(--gold); }
+    .card .card-icon {
+      width: 44px; height: 44px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; margin-bottom: 18px;
+    }
+    .card .card-icon.blue { background: var(--blue-light); }
+    .card .card-icon.gold { background: var(--gold-light); }
+    .card h3 { font-size: 18px; font-weight: 800; color: var(--dark); margin-bottom: 10px; }
+    .card p { font-size: 14.5px; color: var(--muted); line-height: 1.6; }
+
+    /* Subgrid alignment — parent defines shared row tracks, cards span them */
+    .cards-aligned.rows-icon {
+      grid-template-rows: auto auto 1fr;
+    }
+    .cards-aligned.rows-icon > .card {
+      display: grid;
+      grid-template-rows: subgrid;
+      grid-row: span 3;
+    }
+    .cards-aligned.rows-3p {
+      grid-template-rows: auto auto auto auto;
+    }
+    .cards-aligned.rows-3p > .card {
+      display: grid;
+      grid-template-rows: subgrid;
+      grid-row: span 4;
+      row-gap: 12px;
+    }
+    .val-head { font-size: 20px !important; margin-bottom: 0 !important; padding-bottom: 14px; border-bottom: 1px solid rgba(0,0,0,.06); }
+    .val-head-blue { color: var(--blue) !important; }
+    .val-head-gold { color: var(--gold) !important; }
+
+    /* ── Steps ────────────────────────────────── */
+    .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 32px; margin-top: 48px; counter-reset: step; }
+    .step { position: relative; padding-left: 0; }
+    .step::before {
+      content: counter(step); counter-increment: step;
+      display: flex; align-items: center; justify-content: center;
+      width: 40px; height: 40px; border-radius: 12px;
+      background: var(--blue); color: #fff; font-size: 16px; font-weight: 800;
+      margin-bottom: 16px;
+    }
+    .step h4 { font-size: 16px; font-weight: 800; color: var(--dark); margin-bottom: 6px; }
+    .step p { font-size: 14px; color: var(--muted); line-height: 1.55; }
+
+    /* ── Pilot details ───────────────────────── */
+    .pilot-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; margin-top: 48px; }
+    .pilot-item { padding: 28px; background: var(--card); border-radius: var(--radius); box-shadow: 0 4px 20px rgba(2,6,23,.05); }
+    .pilot-item .pilot-key { font-size: 13px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+    .pilot-item .pilot-val { font-size: 15px; color: var(--ink); line-height: 1.55; }
+
+    /* ── Roadmap ──────────────────────────────── */
+    .roadmap-list { margin-top: 40px; display: grid; gap: 16px; }
+    .roadmap-item {
+      display: flex; align-items: flex-start; gap: 16px;
+      font-size: 15px; color: var(--ink); line-height: 1.55;
+    }
+    .roadmap-dot {
+      flex-shrink: 0; width: 10px; height: 10px; margin-top: 8px;
+      border-radius: 999px; background: var(--gold); box-shadow: 0 0 0 4px rgba(249,168,37,.18);
+    }
+
+    /* ── CTA ──────────────────────────────────── */
+    .cta-section { text-align: center; }
+    .cta-section h2 { margin: 0 auto; }
+    .cta-section .subtitle { margin: 20px auto 0; }
+    .cta-buttons { margin-top: 36px; display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; }
+    .cta-secondary { margin-top: 20px; font-size: 15px; color: var(--muted); }
+
+    /* ── Footer ───────────────────────────────── */
+    footer {
+      padding: 40px 28px; text-align: center; font-size: 13px; color: var(--muted);
+      border-top: 1px solid rgba(0,0,0,.06);
+    }
+    footer a { color: var(--blue); text-decoration: none; }
+
+    /* ── Responsive ───────────────────────────── */
+    @media (max-width: 640px) {
+      section { padding: 64px 20px; }
+      .hero { padding-top: 120px; }
+      .tam { padding: 48px 20px; }
+      .section-label { font-size: 14px; }
+      body.zh .section-label { font-size: 13px; }
+      .tam-item .tam-value { font-size: 34px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="logo">Driver<span>Park</span></a>
+    <div class="nav-right">
+      <button class="lang-toggle" id="langToggle" aria-label="Switch language">中文</button>
+      <a href="#contact" class="cta-nav" data-i18n="nav_cta">Join the Pilot</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="container">
+    <div class="section-label" data-i18n="hero_label">Parking &middot; Welfare &middot; Community</div>
+    <h1 data-i18n="hero_title">Build Hong Kong's first driver&#8209;friendly mall&nbsp;network.</h1>
+    <p class="subtitle" data-i18n="hero_sub">Channel tens of thousands of professional drivers into your malls during meal and rest windows, turning idle bays into reliable weekday spend.</p>
+    <div class="hero-cta">
+      <a href="#contact" class="btn btn-primary" data-i18n="hero_cta">Join the 6-month pilot</a>
+    </div>
+  </div>
+</section>
+
+<!-- TAM band -->
+<section class="tam">
+  <div class="container">
+    <div class="tam-grid">
+      <div class="tam-item">
+        <div class="tam-value">50,000+</div>
+        <div class="tam-label" data-i18n="tam1">Daily taxi &amp; ride-hailing drivers in market</div>
+      </div>
+      <div class="tam-item">
+        <div class="tam-value">50+</div>
+        <div class="tam-label" data-i18n="tam2">Malls &amp; centers targeted for phase one coverage</div>
+      </div>
+      <div class="tam-item">
+        <div class="tam-value" data-i18n="tam3_val">HK$1.3–2.2B</div>
+        <div class="tam-label" data-i18n="tam3">Annual network spend potential across 50k drivers</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Why Now -->
+<section id="why">
+  <div class="container">
+    <div class="section-label" data-i18n="why_label">Why Now</div>
+    <h2 data-i18n="why_title">Three forces creating a window of&nbsp;opportunity.</h2>
+    <div class="cards cards-3 cards-aligned rows-icon">
+      <div class="card">
+        <div class="card-icon blue">🅿️</div>
+        <h3 data-i18n="why1_h">Idle Bays, Ready to Monetize</h3>
+        <p data-i18n="why1_p">A significant share of carpark bays sit empty during off-peak hours. Driver visits fill them without touching peak shopper capacity.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon blue">🚖</div>
+        <h3 data-i18n="why2_h">Drivers Need Safe Stops</h3>
+        <p data-i18n="why2_p">Professional drivers risk ~HK$400 fines every meal break. A reliable, safe parking option keeps them coming back daily.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon blue">📊</div>
+        <h3 data-i18n="why3_h">Weekday Traffic + ESG Story</h3>
+        <p data-i18n="why3_p">Malls want steady weekday footfall and a credible welfare narrative for ESG reporting. This delivers both.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Our Offer -->
+<section id="offer" style="background: #fff;">
+  <div class="container">
+    <div class="section-label" data-i18n="offer_label">Our Offer</div>
+    <h2 data-i18n="offer_title">Simple for your team. Powerful for your&nbsp;malls.</h2>
+    <p class="subtitle" data-i18n="offer_sub">Everything your mall needs, nothing it doesn't.</p>
+    <div class="cards cards-3 cards-aligned rows-icon">
+      <div class="card gold-accent">
+        <div class="card-icon gold">🎫</div>
+        <h3 data-i18n="off1_h">Complimentary 1-Hour Parking</h3>
+        <p data-i18n="off1_p">Unlocked by a quick concierge check-in and proof of on-site purchase above HK$50. No receipt upload required today.</p>
+      </div>
+      <div class="card gold-accent">
+        <div class="card-icon gold">📱</div>
+        <h3 data-i18n="off2_h">In-App Mall Promotion</h3>
+        <p data-i18n="off2_p">Partner malls and merchants are promoted to drivers in-app, steering them to your properties first.</p>
+      </div>
+      <div class="card gold-accent">
+        <div class="card-icon gold">💰</div>
+        <h3 data-i18n="off3_h">Zero Capex, Zero Integration</h3>
+        <p data-i18n="off3_p">We run membership, driver support, and reporting. No hardware, no IT involvement, no fees.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Value: Operators + Drivers -->
+<section id="value">
+  <div class="container">
+    <div class="section-label" data-i18n="val_label">Value Exchange</div>
+    <h2 data-i18n="val_title">Everyone wins.</h2>
+    <div class="cards cards-2 cards-aligned rows-3p" style="margin-top: 48px;">
+      <div class="card">
+        <h3 class="val-head val-head-blue" data-i18n="val_ops_h">For Mall Operators</h3>
+        <p data-i18n="val_ops_1">Incremental weekday spend from a workforce in market every single day.</p>
+        <p data-i18n="val_ops_2">Stronger tenant sales PSF in F&amp;B, coffee, convenience, and essentials.</p>
+        <p data-i18n="val_ops_3">Positive street impact — fewer idle vehicles parked outside your mall.</p>
+      </div>
+      <div class="card gold-accent">
+        <h3 class="val-head val-head-gold" data-i18n="val_drv_h">For Professional Drivers</h3>
+        <p data-i18n="val_drv_1">Safe, predictable stops near food, coffee, restrooms, and shelter.</p>
+        <p data-i18n="val_drv_2">One membership that works across a citywide network of malls.</p>
+        <p data-i18n="val_drv_3">Dignity and proper rest during long shifts.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- How It Works -->
+<section id="how" style="background: #fff;">
+  <div class="container">
+    <div class="section-label" data-i18n="how_label">How It Works</div>
+    <h2 data-i18n="how_title">Four steps, no&nbsp;friction.</h2>
+    <p class="subtitle" data-i18n="how_sub">The current flow is intentionally simple — concierge-based, no tech integration needed.</p>
+    <div class="steps">
+      <div class="step">
+        <h4 data-i18n="step1_h">Find &amp; Park</h4>
+        <p data-i18n="step1_p">Driver sees partner malls in-app and parks at the nearest one.</p>
+      </div>
+      <div class="step">
+        <h4 data-i18n="step2_h">Make a Purchase</h4>
+        <p data-i18n="step2_p">Any merchant, any amount. Typical basket is HK$70–120.</p>
+      </div>
+      <div class="step">
+        <h4 data-i18n="step3_h">Show Card at Concierge</h4>
+        <p data-i18n="step3_p">Receipt + digital membership card shown; 1-hour parking validated on the spot.</p>
+      </div>
+      <div class="step">
+        <h4 data-i18n="step4_h">Check-In Logged</h4>
+        <p data-i18n="step4_p">Concierge check-in is recorded. No QR scan or receipt upload required.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Pilot Shape -->
+<section id="pilot">
+  <div class="container">
+    <div class="section-label" data-i18n="pilot_label">Pilot Shape</div>
+    <h2 data-i18n="pilot_title">A 6-month structured pilot to build&nbsp;density.</h2>
+    <p class="subtitle" data-i18n="pilot_sub">Designed to ramp awareness and driver habits across enough locations to prove the model.</p>
+    <div class="pilot-grid">
+      <div class="pilot-item">
+        <div class="pilot-key" data-i18n="pk1">Duration</div>
+        <div class="pilot-val" data-i18n="pv1">6 months — enough time to build driver routines and gather meaningful data.</div>
+      </div>
+      <div class="pilot-item">
+        <div class="pilot-key" data-i18n="pk2">Footprint</div>
+        <div class="pilot-val" data-i18n="pv2">50+ malls and centers to ensure density across driver routes citywide.</div>
+      </div>
+      <div class="pilot-item">
+        <div class="pilot-key" data-i18n="pk3">Validation</div>
+        <div class="pilot-val" data-i18n="pv3">Concierge check-ins with digital membership card. We count redemptions per site/day and share monthly.</div>
+      </div>
+      <div class="pilot-item">
+        <div class="pilot-key" data-i18n="pk4">Reporting</div>
+        <div class="pilot-val" data-i18n="pv4">Visits by time of day, driver feedback, and merchant spotlight performance (clicks &amp; impressions in app).</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Roadmap -->
+<section id="roadmap" style="background: #fff;">
+  <div class="container">
+    <div class="section-label" data-i18n="road_label">What's Next</div>
+    <h2 data-i18n="road_title">The pilot is step one.</h2>
+    <p class="subtitle" data-i18n="road_sub">Once density is reached, the network unlocks much more.</p>
+    <div class="roadmap-list">
+      <div class="roadmap-item"><div class="roadmap-dot"></div><span data-i18n="r1">Deeper in-app merchant promos and meal bundles.</span></div>
+      <div class="roadmap-item"><div class="roadmap-dot"></div><span data-i18n="r2">Expand membership to logistics and delivery drivers to widen the base.</span></div>
+      <div class="roadmap-item"><div class="roadmap-dot"></div><span data-i18n="r3">Optional light-touch POS or QR validation (not in MVP).</span></div>
+      <div class="roadmap-item"><div class="roadmap-dot"></div><span data-i18n="r4">Data insights: visit timing, repeat rates, merchant category interest.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contact">
+  <div class="container">
+    <div class="section-label" data-i18n="cta_label">Get Started</div>
+    <h2 data-i18n="cta_title">Let's start the&nbsp;conversation.</h2>
+    <div class="cta-buttons">
+      <a href="mailto:bryan@driverpark.hk" class="btn btn-primary">✉&ensp;bryan@driverpark.hk</a>
+      <a href="tel:+85265026979" class="btn btn-outline">☎&ensp;852-6502-6979</a>
+    </div>
+    <p class="cta-secondary" data-i18n="cta_sub">Co-design the citywide driver membership network with us.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    &copy; 2026 DriverPark &middot; <a href="https://www.driverpark.hk">www.driverpark.hk</a> &middot; Hong&nbsp;Kong
+  </div>
+</footer>
+
+<script>
+const i18n = {
+  en: {
+    nav_cta: "Join the Pilot",
+    hero_label: "Parking \u00b7 Welfare \u00b7 Community",
+    hero_title: "Build Hong Kong\u2019s first driver\u2011friendly mall network.",
+    hero_sub: "Channel tens of thousands of professional drivers into your malls during meal and rest windows, turning idle bays into reliable weekday spend.",
+    hero_cta: "Join the 6-month pilot",
+    tam1: "Daily taxi & ride-hailing drivers in market",
+    tam2: "Malls & centers targeted for phase one coverage",
+    tam3_val: "HK$1.3\u20132.2B",
+    tam3: "Annual network spend potential across 50k drivers",
+    why_label: "Why Now",
+    why_title: "Three forces creating a window of opportunity.",
+    why1_h: "Idle Bays, Ready to Monetize",
+    why1_p: "A significant share of carpark bays sit empty during off-peak hours. Driver visits fill them without touching peak shopper capacity.",
+    why2_h: "Drivers Need Safe Stops",
+    why2_p: "Professional drivers risk ~HK$400 fines every meal break. A reliable, safe parking option keeps them coming back daily.",
+    why3_h: "Weekday Traffic + ESG Story",
+    why3_p: "Malls want steady weekday footfall and a credible welfare narrative for ESG reporting. This delivers both.",
+    offer_label: "Our Offer",
+    offer_title: "Simple for your team. Powerful for your malls.",
+    offer_sub: "Everything your mall needs, nothing it doesn\u2019t.",
+    off1_h: "Complimentary 1-Hour Parking",
+    off1_p: "Unlocked by a quick concierge check-in and proof of on-site purchase above HK$50. No receipt upload required today.",
+    off2_h: "In-App Mall Promotion",
+    off2_p: "Partner malls and merchants are promoted to drivers in-app, steering them to your properties first.",
+    off3_h: "Zero Capex, Zero Integration",
+    off3_p: "We run membership, driver support, and reporting. No hardware, no IT involvement, no fees.",
+    val_label: "Value Exchange",
+    val_title: "Everyone wins.",
+    val_ops_h: "For Mall Operators",
+    val_ops_1: "Incremental weekday spend from a workforce in market every single day.",
+    val_ops_2: "Stronger tenant sales PSF in F&B, coffee, convenience, and essentials.",
+    val_ops_3: "Positive street impact \u2014 fewer idle vehicles parked outside your mall.",
+    val_drv_h: "For Professional Drivers",
+    val_drv_1: "Safe, predictable stops near food, coffee, restrooms, and shelter.",
+    val_drv_2: "One membership that works across a citywide network of malls.",
+    val_drv_3: "Dignity and proper rest during long shifts.",
+    how_label: "How It Works",
+    how_title: "Four steps, no friction.",
+    how_sub: "The current flow is intentionally simple \u2014 concierge-based, no tech integration needed.",
+    step1_h: "Find & Park",
+    step1_p: "Driver sees partner malls in-app and parks at the nearest one.",
+    step2_h: "Make a Purchase",
+    step2_p: "Any merchant, any amount. Typical basket is HK$70\u2013120.",
+    step3_h: "Show Card at Concierge",
+    step3_p: "Receipt + digital membership card shown; 1-hour parking validated on the spot.",
+    step4_h: "Check-In Logged",
+    step4_p: "Concierge check-in is recorded. No QR scan or receipt upload required.",
+    pilot_label: "Pilot Shape",
+    pilot_title: "A 6-month structured pilot to build density.",
+    pilot_sub: "Designed to ramp awareness and driver habits across enough locations to prove the model.",
+    pk1: "Duration", pv1: "6 months \u2014 enough time to build driver routines and gather meaningful data.",
+    pk2: "Footprint", pv2: "50+ malls and centers to ensure density across driver routes citywide.",
+    pk3: "Validation", pv3: "Concierge check-ins with digital membership card. We count redemptions per site/day and share monthly.",
+    pk4: "Reporting", pv4: "Visits by time of day, driver feedback, and merchant spotlight performance (clicks & impressions in app).",
+    road_label: "What\u2019s Next",
+    road_title: "The pilot is step one.",
+    road_sub: "Once density is reached, the network unlocks much more.",
+    r1: "Deeper in-app merchant promos and meal bundles.",
+    r2: "Expand membership to logistics and delivery drivers to widen the base.",
+    r3: "Optional light-touch POS or QR validation (not in MVP).",
+    r4: "Data insights: visit timing, repeat rates, merchant category interest.",
+    cta_label: "Get Started",
+    cta_title: "Let\u2019s start the conversation.",
+    cta_sub: "Co-design the citywide driver membership network with us.",
+  },
+  zh: {
+    nav_cta: "\u53c3\u8207\u8a66\u9a57\u8a08\u5283",
+    hero_label: "\u6cca\u8eca \u00b7 \u798f\u5229 \u00b7 \u793e\u5340",
+    hero_title: "\u6253\u9020\u5168\u6e2f\u9996\u500b\u53f8\u6a5f\u53cb\u5584\u5546\u5834\u7db2\u7d61\u3002",
+    hero_sub: "\u5c07\u6578\u4ee5\u842c\u8a08\u7684\u8077\u696d\u53f8\u6a5f\u5728\u7528\u9910\u53ca\u4f11\u606f\u6642\u6bb5\u5f15\u5c0e\u81f3\u60a8\u7684\u5546\u5834\uff0c\u5c07\u9592\u7f6e\u8eca\u4f4d\u8f49\u5316\u70ba\u7a69\u5b9a\u7684\u5e73\u65e5\u6d88\u8cbb\u3002",
+    hero_cta: "\u53c3\u8207\u516d\u500b\u6708\u8a66\u9a57\u8a08\u5283",
+    tam1: "\u6bcf\u65e5\u6d3b\u8e8d\u7684\u58eb\u53ca\u7db2\u7d04\u8eca\u53f8\u6a5f",
+    tam2: "\u9996\u968e\u6bb5\u76ee\u6a19\u8986\u84cb\u5546\u5834\u53ca\u5546\u696d\u4e2d\u5fc3",
+    tam3_val: "HK$13\u201322\u5104",
+    tam3: "\u5168\u7db2\u7d61\u5e74\u5ea6\u6d88\u8cbb\u6f5b\u529b\uff0850,000\u540d\u53f8\u6a5f\uff09",
+    why_label: "\u70ba\u4ec0\u9ebc\u662f\u73fe\u5728",
+    why_title: "\u4e09\u80a1\u529b\u91cf\u6b63\u5728\u5275\u9020\u6a5f\u6703\u3002",
+    why1_h: "\u9592\u7f6e\u8eca\u4f4d\uff0c\u96a8\u6642\u53ef\u7528",
+    why1_p: "\u975e\u7e41\u5fd9\u6642\u6bb5\u5927\u91cf\u8eca\u4f4d\u9592\u7f6e\u3002\u53f8\u6a5f\u5230\u8a2a\u53ef\u586b\u6eff\u9019\u4e9b\u8eca\u4f4d\uff0c\u5b8c\u5168\u4e0d\u5f71\u97ff\u9ad8\u5cf0\u671f\u5bb9\u91cf\u3002",
+    why2_h: "\u53f8\u6a5f\u9700\u8981\u5b89\u5fc3\u7684\u4f11\u606f\u9ede",
+    why2_p: "\u8077\u696d\u53f8\u6a5f\u6bcf\u6b21\u98ef\u4f11\u90fd\u9762\u81e8\u7d04HK$400\u7f70\u6b3e\u98a8\u96aa\u3002\u63d0\u4f9b\u5b89\u5fc3\u7684\u6cca\u8eca\u9078\u64c7\uff0c\u8b93\u4ed6\u5011\u6bcf\u5929\u90fd\u9858\u610f\u56de\u4f86\u3002",
+    why3_h: "\u5e73\u65e5\u4eba\u6d41 + \u793e\u6703\u8cac\u4efb",
+    why3_p: "\u5546\u5834\u9700\u8981\u7a69\u5b9a\u7684\u5e73\u65e5\u4eba\u6d41\u548c\u6709\u8aaa\u670d\u529b\u7684\u793e\u6703\u798f\u5229\u6545\u4e8b\u4f5cESG\u5831\u544a\u3002\u9019\u500b\u8a08\u5283\u5169\u8005\u517c\u5099\u3002",
+    offer_label: "\u6211\u5011\u7684\u65b9\u6848",
+    offer_title: "\u60a8\u7684\u5718\u968a\u7c21\u55ae\u57f7\u884c\uff0c\u5546\u5834\u5be6\u969b\u53d7\u76ca\u3002",
+    offer_sub: "\u60a8\u7684\u5546\u5834\u6240\u9700\u7684\u4e00\u5207\uff0c\u7c21\u55ae\u76f4\u63a5\u3002",
+    off1_h: "\u514d\u8cbb\u6cca\u8eca1\u5c0f\u6642",
+    off1_p: "\u53f8\u6a5f\u65bc\u5546\u5834\u6d88\u8cbbHK$50\u4ee5\u4e0a\u5f8c\uff0c\u5411\u79ae\u8cd3\u90e8\u51fa\u793a\u6703\u54e1\u5361\u5373\u53ef\u3002\u73fe\u968e\u6bb5\u7121\u9700\u4e0a\u8f09\u6536\u64da\u3002",
+    off2_h: "\u61c9\u7528\u7a0b\u5f0f\u5167\u63a8\u5ee3",
+    off2_p: "\u5408\u4f5c\u5546\u5834\u53ca\u5546\u6236\u5728\u61c9\u7528\u7a0b\u5f0f\u5167\u512a\u5148\u5c55\u793a\uff0c\u5f15\u5c0e\u53f8\u6a5f\u524d\u5f80\u60a8\u7684\u7269\u696d\u3002",
+    off3_h: "\u96f6\u6210\u672c\u3001\u96f6\u5c0d\u63a5",
+    off3_p: "\u6703\u54e1\u7ba1\u7406\u3001\u53f8\u6a5f\u652f\u63f4\u53ca\u6578\u64da\u5831\u544a\u5168\u7531\u6211\u5011\u8ca0\u8cac\u3002\u7121\u9700\u786c\u4ef6\u3001\u7121\u9700IT\u53c3\u8207\u3001\u7121\u4efb\u4f55\u8cbb\u7528\u3002",
+    val_label: "\u50f9\u503c\u4ea4\u63db",
+    val_title: "\u591a\u65b9\u5171\u8d0f\u3002",
+    val_ops_h: "\u5546\u5834\u71df\u904b\u5546",
+    val_ops_1: "\u4f86\u81ea\u6bcf\u65e5\u5728\u5e02\u5834\u4e0a\u7684\u52de\u52d5\u529b\uff0c\u7a69\u5b9a\u7684\u5e73\u65e5\u984d\u5916\u6d88\u8cbb\u3002",
+    val_ops_2: "\u9910\u98f2\u3001\u5496\u5561\u3001\u4fbf\u5229\u5e97\u7b49\u79df\u6236\u6bcf\u5e73\u65b9\u544e\u92b7\u552e\u984d\u63d0\u5347\u3002",
+    val_ops_3: "\u6b63\u9762\u8857\u9053\u5f71\u97ff\u2014\u2014\u5546\u5834\u5916\u9592\u7f6e\u8eca\u8f1b\u6e1b\u5c11\u3002",
+    val_drv_h: "\u8077\u696d\u53f8\u6a5f",
+    val_drv_1: "\u9130\u8fd1\u9910\u98f2\u3001\u5496\u5561\u3001\u6d17\u624b\u9593\u53ca\u9045\u853d\u8655\u7684\u5b89\u5fc3\u6cca\u8eca\u9ede\u3002",
+    val_drv_2: "\u4e00\u5f35\u6703\u54e1\u5361\uff0c\u901a\u884c\u5168\u6e2f\u5408\u4f5c\u5546\u5834\u7db2\u7d61\u3002",
+    val_drv_3: "\u5728\u6f2b\u9577\u66f4\u6b21\u4e2d\u5f97\u5230\u61c9\u6709\u7684\u4f11\u606f\u8207\u5c0a\u91cd\u3002",
+    how_label: "\u904b\u4f5c\u6d41\u7a0b",
+    how_title: "\u56db\u500b\u6b65\u9a5f\uff0c\u7c21\u55ae\u76f4\u63a5\u3002",
+    how_sub: "\u73fe\u968e\u6bb5\u6d41\u7a0b\u4ee5\u79ae\u8cd3\u90e8\u70ba\u4e3b\uff0c\u7121\u9700\u4efb\u4f55\u7cfb\u7d71\u5c0d\u63a5\u3002",
+    step1_h: "\u67e5\u627e\u8207\u6cca\u8eca",
+    step1_p: "\u53f8\u6a5f\u5728\u61c9\u7528\u7a0b\u5f0f\u67e5\u770b\u5408\u4f5c\u5546\u5834\uff0c\u524d\u5f80\u6700\u8fd1\u7684\u4e00\u9593\u6cca\u8eca\u3002",
+    step2_h: "\u5546\u5834\u5167\u6d88\u8cbb",
+    step2_p: "\u4efb\u4f55\u5546\u6236\u3001\u4efb\u4f55\u91d1\u984d\u3002\u4e00\u822c\u6d88\u8cbbHK$70\u2013120\u3002",
+    step3_h: "\u79ae\u8cd3\u90e8\u51fa\u793a\u6703\u54e1\u5361",
+    step3_p: "\u51fa\u793a\u6d88\u8cbb\u6191\u8b49\u53ca\u6578\u78bc\u6703\u54e1\u5361\uff0c\u5373\u58341\u5c0f\u6642\u514d\u8cbb\u6cca\u8eca\u3002",
+    step4_h: "\u767b\u8a18\u5b8c\u6210",
+    step4_p: "\u79ae\u8cd3\u90e8\u8a18\u9304\u5230\u8a2a\u3002\u7121\u9700\u6383\u78bc\u6216\u4e0a\u8f09\u6536\u64da\u3002",
+    pilot_label: "\u8a66\u9a57\u898f\u5283",
+    pilot_title: "\u516d\u500b\u6708\u7d50\u69cb\u5316\u8a66\u9a57\uff0c\u5efa\u7acb\u7db2\u7d61\u5bc6\u5ea6\u3002",
+    pilot_sub: "\u900f\u904e\u8db3\u5920\u7684\u64da\u9ede\u5efa\u7acb\u53f8\u6a5f\u7fd2\u6163\uff0c\u9a57\u8b49\u6a21\u5f0f\u53ef\u884c\u6027\u3002",
+    pk1: "\u70ba\u671f", pv1: "\u516d\u500b\u6708\u2014\u2014\u8db3\u5920\u5efa\u7acb\u53f8\u6a5f\u5e38\u898f\u4e26\u6536\u96c6\u6709\u610f\u7fa9\u7684\u6578\u64da\u3002",
+    pk2: "\u8986\u84cb\u7bc4\u570d", pv2: "50+\u5546\u5834\u53ca\u5546\u696d\u4e2d\u5fc3\uff0c\u78ba\u4fdd\u53f8\u6a5f\u8def\u7dda\u4e0a\u6709\u8db3\u5920\u5bc6\u5ea6\u3002",
+    pk3: "\u9a57\u8b49\u65b9\u5f0f", pv3: "\u79ae\u8cd3\u90e8\u6838\u5c0d\u6578\u78bc\u6703\u54e1\u5361\u3002\u6211\u5011\u6309\u65e5\u6309\u5730\u9ede\u7d71\u8a08\u4f7f\u7528\u6b21\u6578\uff0c\u6bcf\u6708\u5206\u4eab\u5831\u544a\u3002",
+    pk4: "\u6578\u64da\u5831\u544a", pv4: "\u6309\u6642\u6bb5\u7d71\u8a08\u5230\u8a2a\u6578\u64da\u3001\u53f8\u6a5f\u56de\u994b\u3001\u5546\u6236\u63a8\u5ee3\u8868\u73fe\uff08\u9ede\u64ca/\u66dd\u5149\u91cf\uff09\u3002",
+    road_label: "\u672a\u4f86\u85cd\u5716",
+    road_title: "\u8a66\u9a57\u8a08\u5283\u53ea\u662f\u7b2c\u4e00\u6b65\u3002",
+    road_sub: "\u7576\u7db2\u7d61\u5bc6\u5ea6\u9054\u6a19\u5f8c\uff0c\u66f4\u591a\u53ef\u80fd\u6027\u5c07\u88ab\u89e3\u9396\u3002",
+    r1: "\u66f4\u6df1\u5165\u7684\u61c9\u7528\u7a0b\u5f0f\u5167\u5546\u6236\u512a\u60e0\u53ca\u5957\u9910\u63a8\u5ee3\u3002",
+    r2: "\u64f4\u5c55\u6703\u54e1\u81f3\u7269\u6d41\u53ca\u901e\u905e\u53f8\u6a5f\uff0c\u64f4\u5927\u6703\u54e1\u57fa\u790e\u3002",
+    r3: "\u65e5\u5f8c\u53ef\u9078\u8f15\u5ea6POS\u6216QR\u9a57\u8b49\uff08\u975eMVP\u968e\u6bb5\uff09\u3002",
+    r4: "\u6578\u64da\u6d1e\u5bdf\uff1a\u5230\u8a2a\u6642\u6bb5\u3001\u56de\u8a2a\u7387\u3001\u5546\u6236\u985e\u5225\u504f\u597d\u3002",
+    cta_label: "\u958b\u59cb\u5408\u4f5c",
+    cta_title: "\u8b93\u6211\u5011\u958b\u59cb\u5c0d\u8a71\u3002",
+    cta_sub: "\u8207\u6211\u5011\u5171\u540c\u6253\u9020\u5168\u6e2f\u53f8\u6a5f\u6703\u54e1\u7db2\u7d61\u3002",
+  },
+};
+
+let currentLang = "en";
+function setLang(lang) {
+  currentLang = lang;
+  const strings = i18n[lang];
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    const key = el.getAttribute("data-i18n");
+    if (strings[key] != null) el.textContent = strings[key];
+  });
+  document.documentElement.lang = lang === "zh" ? "zh-HK" : "en";
+  document.body.classList.toggle("zh", lang === "zh");
+  document.getElementById("langToggle").textContent = lang === "en" ? "\u4e2d\u6587" : "EN";
+  document.title = lang === "zh"
+    ? "DriverPark \u2014 \u6253\u9020\u5168\u6e2f\u53f8\u6a5f\u53cb\u5584\u5546\u5834\u7db2\u7d61"
+    : "DriverPark \u2014 Build Hong Kong's First Driver-Friendly Mall Network";
+}
+document.getElementById("langToggle").addEventListener("click", () => {
+  setLang(currentLang === "en" ? "zh" : "en");
+});
+</script>
+</body>
+</html>
